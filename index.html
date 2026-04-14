@@ -12,39 +12,34 @@ body{
   background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 }
 
-/* LAYOUT */
 .main{
   display:flex;
   justify-content:center;
   gap:20px;
   padding:20px;
-  min-height:100vh; /* 🔥 mudou aqui */
+  min-height:100vh;
 }
 
-/* BOX */
 .box{
-  min-height:650px; /* 🔥 mudou aqui */
+  min-height:650px;
   display:flex;
   flex-direction:column;
   border-radius:18px;
   padding:20px;
 }
 
-/* CENTRO */
 .container{
   width:600px;
   background:#fff;
   box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
 
-/* LATERAL */
 .side{
   width:260px;
   background:rgba(255,255,255,0.1);
   color:white;
 }
 
-/* INPUTS */
 select, input{
   width:100%;
   padding:12px;
@@ -53,29 +48,25 @@ select, input{
   border:1px solid #e5e7eb;
 }
 
-/* TEXTAREAS */
 textarea{
   padding:12px;
   border-radius:10px;
   border:1px solid #e5e7eb;
   resize:none;
-  color:#000; /* 🔥 garante visibilidade */
+  color:#000;
 }
 
-/* PRINCIPAL */
 #resultado{
-  height:220px; /* 🔥 aumentado */
+  height:220px;
   margin-top:10px;
   overflow:auto;
 }
 
-/* ATALHOS */
 #atalhoResultado{
   height:160px;
   margin-top:10px;
 }
 
-/* BOTÕES */
 button{
   width:100%;
   padding:12px;
@@ -110,6 +101,26 @@ h2{text-align:center;margin-bottom:15px;}
   margin-top:10px;
   color:#9ca3af;
 }
+
+/* 🔥 RADIO PERFEITO */
+.radio-group{
+  display:flex;
+  gap:30px;
+  margin-top:10px;
+}
+
+.radio-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  white-space:nowrap;
+  font-size:14px;
+  cursor:pointer;
+}
+
+.radio-item input{
+  accent-color:#00c6ff;
+}
 </style>
 </head>
 
@@ -130,20 +141,49 @@ h2{text-align:center;margin-bottom:15px;}
 <option value="orcamento">Orçamento</option>
 </select>
 
+<!-- EXAME -->
 <div id="exame" class="hidden section">
 <input id="dataE" placeholder="Data">
 <input id="horaE" placeholder="Horário">
+
+<div class="radio-group">
+  <label class="radio-item">
+    <input type="radio" name="tipoE" value="Horário marcado">
+    <span>Horário marcado</span>
+  </label>
+
+  <label class="radio-item">
+    <input type="radio" name="tipoE" value="Ordem de chegada">
+    <span>Ordem de chegada</span>
+  </label>
+</div>
+
 <input id="exameNome" placeholder="Exame">
 <button onclick="gerarExame()">Gerar</button>
 </div>
 
+<!-- CONSULTA -->
 <div id="consulta" class="hidden section">
 <input id="dataC" placeholder="Data">
 <input id="horaC" placeholder="Horário">
+
+<div class="radio-group">
+  <label class="radio-item">
+    <input type="radio" name="tipoC" value="Horário marcado">
+    <span>Horário marcado</span>
+  </label>
+
+  <label class="radio-item">
+    <input type="radio" name="tipoC" value="Ordem de chegada">
+    <span>Ordem de chegada</span>
+  </label>
+</div>
+
 <input id="medico" placeholder="Médico">
 <button onclick="gerarConsulta()">Gerar</button>
 </div>
 
+<!-- ORÇAMENTO -->
 <div id="orcamento" class="hidden section">
 <div id="itens"></div>
 <button onclick="addItem()">+ Exame</button>
@@ -159,7 +199,7 @@ h2{text-align:center;margin-bottom:15px;}
 
 </div>
 
-<!-- DIREITA -->
+<!-- LATERAL -->
 <div class="side box">
 
 <h3>⚡ Atalhos</h3>
@@ -181,7 +221,6 @@ h2{text-align:center;margin-bottom:15px;}
 
 <script>
 
-// SISTEMA ORIGINAL
 function trocar(){
  document.getElementById('exame').classList.add('hidden');
  document.getElementById('consulta').classList.add('hidden');
@@ -195,7 +234,10 @@ function gerarExame(){
  let hora=document.getElementById('horaE').value;
  let exame=document.getElementById('exameNome').value;
 
- document.getElementById('resultado').value=`*Seu exame foi agendado:*\n\n🗓 Data: ${data}\n⏰ Horário: ${hora}\n📌 Exame: ${exame}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
+ let tipo = document.querySelector('input[name="tipoE"]:checked')?.value || "";
+ let info = tipo ? `${hora} - ${tipo}` : hora;
+
+ document.getElementById('resultado').value=`*Seu exame foi agendado:*\n\n🗓 Data: ${data}\n⏰ Horário: ${info}\n📌 Exame: ${exame}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
 }
 
 function gerarConsulta(){
@@ -203,7 +245,10 @@ function gerarConsulta(){
  let hora=document.getElementById('horaC').value;
  let medico=document.getElementById('medico').value;
 
- document.getElementById('resultado').value=`*Sua consulta foi agendada:*\n\n🗓 Data: ${data}\n⏰ Horário: ${hora}\n👨‍⚕️ Médico: ${medico}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
+ let tipo = document.querySelector('input[name="tipoC"]:checked')?.value || "";
+ let info = tipo ? `${hora} - ${tipo}` : hora;
+
+ document.getElementById('resultado').value=`*Sua consulta foi agendada:*\n\n🗓 Data: ${data}\n⏰ Horário: ${info}\n👨‍⚕️ Médico: ${medico}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
 }
 
 let contador=0;
@@ -240,8 +285,7 @@ function usarAtalho(msg){
 }
 
 function copiarAtalho(){
- let texto=document.getElementById('atalhoResultado').value;
- navigator.clipboard.writeText(texto);
+ navigator.clipboard.writeText(document.getElementById('atalhoResultado').value);
  alert("Atalho copiado!");
 }
 
