@@ -12,28 +12,32 @@ body{
   background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 }
 
+/* LAYOUT */
 .main{
   display:flex;
   justify-content:center;
   gap:20px;
   padding:20px;
-  height:100vh;
+  min-height:100vh; /* 🔥 mudou aqui */
 }
 
+/* BOX */
 .box{
-  height:650px;
+  min-height:650px; /* 🔥 mudou aqui */
   display:flex;
   flex-direction:column;
   border-radius:18px;
   padding:20px;
 }
 
+/* CENTRO */
 .container{
   width:600px;
   background:#fff;
   box-shadow:0 20px 40px rgba(0,0,0,0.25);
 }
 
+/* LATERAL */
 .side{
   width:260px;
   background:rgba(255,255,255,0.1);
@@ -49,24 +53,25 @@ select, input{
   border:1px solid #e5e7eb;
 }
 
+/* TEXTAREAS */
 textarea{
   padding:12px;
   border-radius:10px;
   border:1px solid #e5e7eb;
   resize:none;
+  color:#000; /* 🔥 garante visibilidade */
 }
 
 /* PRINCIPAL */
 #resultado{
-   height:200px;
+  height:220px; /* 🔥 aumentado */
   margin-top:10px;
-  resize:none;
   overflow:auto;
 }
 
 /* ATALHOS */
 #atalhoResultado{
-  height:150px;
+  height:160px;
   margin-top:10px;
 }
 
@@ -154,7 +159,7 @@ h2{text-align:center;margin-bottom:15px;}
 
 </div>
 
-<!-- DIREITA (ATALHOS) -->
+<!-- DIREITA -->
 <div class="side box">
 
 <h3>⚡ Atalhos</h3>
@@ -165,7 +170,6 @@ h2{text-align:center;margin-bottom:15px;}
 <button onclick="usarAtalho('💧 Beber bastante água antes do exame.')">Água</button>
 <button onclick="usarAtalho('📍 Clínica CTO Imagem e Medicina\nAvenida Santos Dumont N-836\nhttps://maps.app.goo.gl/Sc8cn8tPJgX6snUj6')">Endereço</button>
 
-<!-- RESULTADO DOS ATALHOS -->
 <textarea id="atalhoResultado" placeholder="Os atalhos aparecem aqui..."></textarea>
 
 <button onclick="copiarAtalho()">Copiar Atalho</button>
@@ -230,7 +234,6 @@ function copiar(){
  document.execCommand('copy');
 }
 
-// ATALHOS (AGORA NA LATERAL)
 function usarAtalho(msg){
  let area=document.getElementById('atalhoResultado');
  area.value += (area.value ? "\n\n" : "") + msg;
