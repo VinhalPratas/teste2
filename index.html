@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Sistema SantoryTec</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+.main{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  padding:20px;
+  height:100vh;
+}
+
+.box{
+  height:650px;
+  display:flex;
+  flex-direction:column;
+  border-radius:18px;
+  padding:20px;
+}
+
+.container{
+  width:600px;
+  background:#fff;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.side{
+  width:260px;
+  background:rgba(255,255,255,0.1);
+  color:white;
+}
+
+/* INPUTS */
+select, input{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+}
+
+textarea{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  resize:none;
+}
+
+/* PRINCIPAL */
+#resultado{
+  flex:1;
+  margin-top:10px;
+}
+
+/* ATALHOS */
+#atalhoResultado{
+  height:150px;
+  margin-top:10px;
+}
+
+/* BOTÕES */
+button{
+  width:100%;
+  padding:12px;
+  margin-top:8px;
+  border:none;
+  border-radius:12px;
+  background: linear-gradient(135deg,#4facfe,#00f2fe);
+  color:white;
+  cursor:pointer;
+}
+
+.hidden{display:none}
+
+.logo{
+  width:160px;
+  margin:0 auto 10px;
+  display:block;
+}
+
+h2{text-align:center;margin-bottom:15px;}
+
+.section{
+  margin-top:15px;
+  padding:15px;
+  border-radius:12px;
+  background:#f9fafb;
+}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  margin-top:10px;
+  color:#9ca3af;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main">
+
+<!-- CENTRO -->
+<div class="container box">
+
+<img src="Logo tecnológico SantoryTec com design moderno.png" class="logo">
+<h2>Sistema de Mensagens automáticas</h2>
+
+<select id="tipo" onchange="trocar()">
+<option value="">Selecione</option>
+<option value="exame">Agendamento Exame</option>
+<option value="consulta">Agendamento Consulta</option>
+<option value="orcamento">Orçamento</option>
+</select>
+
+<div id="exame" class="hidden section">
+<input id="dataE" placeholder="Data">
+<input id="horaE" placeholder="Horário">
+<input id="exameNome" placeholder="Exame">
+<button onclick="gerarExame()">Gerar</button>
+</div>
+
+<div id="consulta" class="hidden section">
+<input id="dataC" placeholder="Data">
+<input id="horaC" placeholder="Horário">
+<input id="medico" placeholder="Médico">
+<button onclick="gerarConsulta()">Gerar</button>
+</div>
+
+<div id="orcamento" class="hidden section">
+<div id="itens"></div>
+<button onclick="addItem()">+ Exame</button>
+<button onclick="gerarOrcamento()">Gerar</button>
+</div>
+
+<button onclick="copiar()">Copiar Mensagem</button>
+
+<textarea id="resultado" readonly></textarea>
+
+<div class="footer">Sistema SantoryTec</div>
+<div class="footer">By Kamilly Vitoria</div>
+
+</div>
+
+<!-- DIREITA (ATALHOS) -->
+<div class="side box">
+
+<h3>⚡ Atalhos</h3>
+
+<button onclick="usarAtalho('🔔 Lembrete: Chegar com 15 minutos de antecedência.')">Lembrete</button>
+<button onclick="usarAtalho('📄 Trazer documento com foto.')">Documento</button>
+<button onclick="usarAtalho('🚫 Necessário jejum de 8 horas.')">Jejum</button>
+<button onclick="usarAtalho('💧 Beber bastante água antes do exame.')">Água</button>
+<button onclick="usarAtalho('📍 Clínica CTO Imagem e Medicina\nAvenida Santos Dumont N-836\nhttps://maps.app.goo.gl/Sc8cn8tPJgX6snUj6')">Endereço</button>
+
+<!-- RESULTADO DOS ATALHOS -->
+<textarea id="atalhoResultado" placeholder="Os atalhos aparecem aqui..."></textarea>
+
+<button onclick="copiarAtalho()">Copiar Atalho</button>
+<button onclick="limparAtalho()">Limpar</button>
+
+</div>
+
+</div>
+
+<script>
+
+// SISTEMA ORIGINAL
+function trocar(){
+ document.getElementById('exame').classList.add('hidden');
+ document.getElementById('consulta').classList.add('hidden');
+ document.getElementById('orcamento').classList.add('hidden');
+ let t=document.getElementById('tipo').value;
+ if(t) document.getElementById(t).classList.remove('hidden');
+}
+
+function gerarExame(){
+ let data=document.getElementById('dataE').value;
+ let hora=document.getElementById('horaE').value;
+ let exame=document.getElementById('exameNome').value;
+
+ document.getElementById('resultado').value=`*Seu exame foi agendado:*\n\n🗓 Data: ${data}\n⏰ Horário: ${hora}\n📌 Exame: ${exame}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
+}
+
+function gerarConsulta(){
+ let data=document.getElementById('dataC').value;
+ let hora=document.getElementById('horaC').value;
+ let medico=document.getElementById('medico').value;
+
+ document.getElementById('resultado').value=`*Sua consulta foi agendada:*\n\n🗓 Data: ${data}\n⏰ Horário: ${hora}\n👨‍⚕️ Médico: ${medico}\n\n⏳ Importante:\nPodem ocorrer atrasos devido a intercorrências, mas faremos o possível para atendê-lo(a) no menor tempo possível.\n\nCaso tenha dúvidas, estamos à disposição!`;
+}
+
+let contador=0;
+
+function addItem(){
+ contador++;
+ let div=document.createElement('div');
+ div.innerHTML=`<input id="ex${contador}" placeholder="Exame"><input id="cv${contador}" placeholder="Convênio"><input id="vl${contador}" type="number" placeholder="Valor">`;
+ document.getElementById('itens').appendChild(div);
+}
+
+function gerarOrcamento(){
+ let total=0;
+ let txt="*Orçamento de Exames:*\n\n";
+ for(let i=1;i<=contador;i++){
+  let ex=document.getElementById('ex'+i)?.value;
+  let cv=document.getElementById('cv'+i)?.value;
+  let vl=parseFloat(document.getElementById('vl'+i)?.value)||0;
+  if(ex){ txt+=`📌 ${ex} (${cv}) - R$ ${vl.toFixed(2)}\n`; total+=vl }
+ }
+ txt+=`\n💰 Total: R$ ${total.toFixed(2)}\n\nPagamento em dinheiro, PIX e cartões de CRÉDITO e DÉBITO\nOferecemos parcelamento em até 2 vezes sem juros ou em até 10 vezes, com acréscimo.`;
+ document.getElementById('resultado').value=txt;
+}
+
+function copiar(){
+ let area=document.getElementById('resultado');
+ area.select();
+ document.execCommand('copy');
+}
+
+// ATALHOS (AGORA NA LATERAL)
+function usarAtalho(msg){
+ let area=document.getElementById('atalhoResultado');
+ area.value += (area.value ? "\n\n" : "") + msg;
+}
+
+function copiarAtalho(){
+ let texto=document.getElementById('atalhoResultado').value;
+ navigator.clipboard.writeText(texto);
+ alert("Atalho copiado!");
+}
+
+function limparAtalho(){
+ document.getElementById('atalhoResultado').value="";
+}
+
+addItem();
+
+</script>
+
+</body>
+</html>
